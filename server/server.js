@@ -1,13 +1,15 @@
-import express from "express";
-import cors from "cors";
-import records from "./routes/record.js";
+import express from 'express';
+import cors from 'cors';
+import items from './routes/item.js';
+import ratings from './routes/rating.js';
 
 const PORT = process.env.PORT || 5050;
 const app = express();
 
 app.use(cors());
 app.use(express.json());
-app.use("/record", records);
+app.use('/item', items);
+app.use('/rating', ratings);
 
 // start the Express server
 app.listen(PORT, () => {
