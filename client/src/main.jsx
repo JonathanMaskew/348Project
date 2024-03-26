@@ -2,9 +2,9 @@ import * as React from 'react';
 import * as ReactDOM from 'react-dom/client';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import App from './App';
-import Record from './components/Record';
+import Item from './components/Item';
 import RatingList from './components/RatingList';
-import RecordList from './components/RecordList';
+import ItemList from './components/ItemList';
 import './index.css';
 import Rating from './components/Rating';
 
@@ -15,7 +15,7 @@ const router = createBrowserRouter([
     children: [
       {
         path: '/',
-        element: <RecordList />,
+        element: <ItemList />,
       },
     ],
   },
@@ -25,7 +25,7 @@ const router = createBrowserRouter([
     children: [
       {
         path: '/create',
-        element: <Record />,
+        element: <Item />,
       },
     ],
   },
@@ -35,7 +35,7 @@ const router = createBrowserRouter([
     children: [
       {
         path: '/edit/:id',
-        element: <Record />,
+        element: <Item />,
       },
     ],
   },

@@ -21,13 +21,13 @@ export default function Rating() {
         console.error(message);
         return;
       }
-      const record = await response.json();
-      if (!record) {
-        console.warn(`Record with id ${id} not found`);
+      const rating = await response.json();
+      if (!rating) {
+        console.warn(`Rating with id ${id} not found`);
         navigate('/');
         return;
       }
-      setForm(record);
+      setForm(rating);
     }
     fetchData();
     return;
@@ -58,7 +58,7 @@ export default function Rating() {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
     } catch (error) {
-      console.error('A problem occurred adding or updating a record: ', error);
+      console.error('A problem occurred adding or updating a rating: ', error);
     } finally {
       setForm({ rating: '', review: '' });
       navigate('/');

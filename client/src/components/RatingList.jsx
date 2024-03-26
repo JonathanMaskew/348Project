@@ -6,10 +6,10 @@ const Rating = (props) => (
     <div className="flex justify-between align-middle py-5 px-4">
       <td className="align-middle">
         <span className="text-2xl font-bold text-reeses-brown hover:text-reeses-orange">
-          {props.record.rating} / 5
+          {props.rating.rating} / 5
         </span>
         <br />
-        <span>{props.record.review}</span>
+        <span>{props.rating.review}</span>
         <br />
       </td>
       <td className="align-middle">
@@ -18,7 +18,7 @@ const Rating = (props) => (
             className="inline-flex items-center text-xl h-9 p-5 bg-reeses-brown text-white hover:opacity-70"
             type="button"
             onClick={() => {
-              props.deleteRecord(props.record._id);
+              props.deleteItem(props.rating._id);
             }}
           >
             Delete
@@ -30,12 +30,12 @@ const Rating = (props) => (
 );
 
 export default function RatingList() {
-  const [records, setRecords] = useState([]);
+  const [ratings, setRatings] = useState([]);
   const params = useParams();
 
-  // This method fetches the records from the database.
+  // This method fetches the ratings from the database.
   useEffect(() => {
-    async function getRecords() {
+    async function getRatings() {
       const response = await fetch(
         `http://localhost:5050/rating/${params.id.toString()}`
       );
@@ -44,41 +44,41 @@ export default function RatingList() {
         console.error(message);
         return;
       }
-      const records = await response.json();
-      setRecords(records);
+      const ratings = await response.json();
+      setRatings(ratings);
     }
-    getRecords();
+    getRatings();
     return;
-  }, [records.length]);
+  }, [ratings.length]);
 
-  // This method will delete a record
-  async function deleteRecord(id) {
+  // This method will delete a item
+  async function deleteItem(id) {
     await fetch(`http://localhost:5050/rating/${id}`, {
       method: 'DELETE',
     });
-    const newRecords = records.filter((el) => el._id !== id);
-    setRecords(newRecords);
+    const newItems = ratings.filter((el) => el._id !== id);
+    setItems(newItems);
   }
 
-  // This method will map out the records on the table
+  // This method will map out the items on the table
   function ratingList() {
-    return records.map((record) => {
+    return ratings.map((rating) => {
       return (
         <Rating
-          record={record}
-          deleteRecord={() => deleteRecord(record._id)}
-          key={record._id}
+          rating={rating}
+          deleteItem={() => deleteItem(ratings._id)}
+          key={rating._id}
         />
       );
     });
   }
 
-  // This following section will display the table with the records of individuals.
+  // This following section will display the table with the items of individuals.
   return (
     <>
       <table className="w-full caption-bottom text-sm">
         <tbody className="bg-reeses-yellow">
-          {records.length ? ratingList() : 'No Ratings Yet'}
+          {ratings.length ? ratingList() : 'No Ratings Yet'}
         </tbody>
       </table>
     </>

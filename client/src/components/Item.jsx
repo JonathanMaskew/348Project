@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 
-export default function Record() {
+export default function Item() {
   const [form, setForm] = useState({
     itemName: '',
     type: 'Classic Cup',
@@ -24,13 +24,13 @@ export default function Record() {
         console.error(message);
         return;
       }
-      const record = await response.json();
-      if (!record) {
-        console.warn(`Record with id ${id} not found`);
+      const item = await response.json();
+      if (!item) {
+        console.warn(`Item with id ${id} not found`);
         navigate('/');
         return;
       }
-      setForm(record);
+      setForm(item);
     }
     fetchData();
     return;
@@ -50,7 +50,7 @@ export default function Record() {
     try {
       let response;
       if (isNew) {
-        // if we are adding a new record we will POST to /record.
+        // if we are adding a new item we will POST to /item.
         response = await fetch('http://localhost:5050/item', {
           method: 'POST',
           headers: {
@@ -59,7 +59,7 @@ export default function Record() {
           body: JSON.stringify(item),
         });
       } else {
-        // if we are updating a record we will PATCH to /record/:id.
+        // if we are updating a item we will PATCH to /item/:id.
         response = await fetch(`http://localhost:5050/item/${params.id}`, {
           method: 'PATCH',
           headers: {
@@ -73,7 +73,7 @@ export default function Record() {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
     } catch (error) {
-      console.error('A problem occurred adding or updating a record: ', error);
+      console.error('A problem occurred adding or updating a item: ', error);
     } finally {
       setForm({ itemName: '', type: '', description: '' });
       navigate('/');

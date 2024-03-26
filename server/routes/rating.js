@@ -11,14 +11,14 @@ import { ObjectId } from 'mongodb';
 // The router will be added as a middleware and will take control of requests starting with path /rating.
 const router = express.Router();
 
-// This section will help you get a list of all the records.
+// This section will help you get a list of all the ratings.
 router.get('/', async (req, res) => {
   let collection = await db.collection('ratings');
   let results = await collection.find({}).toArray();
   res.send(results).status(200);
 });
 
-// This section will help you get a single record by id
+// This section will help you get a single rating by id
 router.get('/:id', async (req, res) => {
   let collection = await db.collection('ratings');
   const query = { itemId: req.params.id };
@@ -28,7 +28,7 @@ router.get('/:id', async (req, res) => {
   else res.send(result).status(200);
 });
 
-// This section will help you create a new record.
+// This section will help you create a new rating.
 router.post('/:id', async (req, res) => {
   try {
     let newDocument = {
@@ -41,11 +41,11 @@ router.post('/:id', async (req, res) => {
     res.send(result).status(204);
   } catch (err) {
     console.error(err);
-    res.status(500).send('Error adding record');
+    res.status(500).send('Error adding rating');
   }
 });
 
-// // This section will help you delete a record
+// // This section will help you delete a rating
 router.delete('/:id', async (req, res) => {
   try {
     const query = { _id: new ObjectId(req.params.id) };
@@ -56,7 +56,7 @@ router.delete('/:id', async (req, res) => {
     res.send(result).status(200);
   } catch (err) {
     console.error(err);
-    res.status(500).send('Error deleting record');
+    res.status(500).send('Error deleting rating');
   }
 });
 
