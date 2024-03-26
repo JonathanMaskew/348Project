@@ -18,7 +18,7 @@ const Rating = (props) => (
             className="inline-flex items-center text-xl h-9 p-5 bg-reeses-brown text-white hover:opacity-70"
             type="button"
             onClick={() => {
-              props.deleteItem(props.rating._id);
+              props.deleteRating(props.rating._id);
             }}
           >
             Delete
@@ -51,29 +51,30 @@ export default function RatingList() {
     return;
   }, [ratings.length]);
 
-  // This method will delete a item
-  async function deleteItem(id) {
+  // This method will delete a rating
+  async function deleteRating(id) {
+    console.log('hi');
     await fetch(`http://localhost:5050/rating/${id}`, {
       method: 'DELETE',
     });
-    const newItems = ratings.filter((el) => el._id !== id);
-    setItems(newItems);
+    const newRatings = ratings.filter((el) => el._id !== id);
+    setRatings(newRatings);
   }
 
-  // This method will map out the items on the table
+  // This method will map out the ratings on the table
   function ratingList() {
     return ratings.map((rating) => {
       return (
         <Rating
           rating={rating}
-          deleteItem={() => deleteItem(ratings._id)}
+          deleteRating={() => deleteRating(rating._id)}
           key={rating._id}
         />
       );
     });
   }
 
-  // This following section will display the table with the items of individuals.
+  // This following section will display the table with the ratings of individuals.
   return (
     <>
       <table className="w-full caption-bottom text-sm">
