@@ -31,6 +31,7 @@ const Rating = (props) => (
 
 export default function RatingList() {
   const [ratings, setRatings] = useState([]);
+  const [average, setAverage] = useState();
   const params = useParams();
 
   // This method fetches the ratings from the database.
@@ -47,7 +48,22 @@ export default function RatingList() {
       const ratings = await response.json();
       setRatings(ratings);
     }
+
+    async function getAverage() {
+      const response = await fetch(
+        `http://localhost:5050/rating/avg/${params.id.toString()}`
+      );
+      if (!response.ok) {
+        const message = `An error occurred: ${response.statusText}`;
+        console.error(message);
+        return;
+      }
+      const result = await response.json();
+      setAverage(result[0]?.average);
+    }
+
     getRatings();
+    getAverage();
     return;
   }, [ratings.length]);
 
@@ -78,6 +94,9 @@ export default function RatingList() {
   return (
     <>
       <table className="w-full caption-bottom text-sm">
+        <p className="mx-3 text-right flex justify-between text-lg font-bold bg-background h-9 text-white">
+          Average Rating: {average ? Math.round(average * 10) / 10 : '-'} / 5
+        </p>
         <tbody className="bg-reeses-yellow">
           {ratings.length ? ratingList() : 'No Ratings Yet'}
         </tbody>

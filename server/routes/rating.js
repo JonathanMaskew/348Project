@@ -18,11 +18,79 @@ router.get('/', async (req, res) => {
   res.send(results).status(200);
 });
 
-// This section will help you get a single rating by id
+// This section will help you get all ratings by id
 router.get('/:id', async (req, res) => {
   let collection = await db.collection('ratings');
   const query = { itemId: req.params.id };
   let result = await collection.find(query).toArray();
+
+  if (!result) res.send('Not found').status(404);
+  else res.send(result).status(200);
+});
+
+// This section will get the average ratings for an item by id
+router.get('/avg/:id', async (req, res) => {
+  let collection = await db.collection('ratings');
+  let result = await collection
+    .aggregate([
+      {
+        $match: {
+          itemId: req.params.id,
+        },
+      },
+      {
+        $group: {
+          _id: '$itemId',
+          average: {
+            $avg: {
+              $toInt: '$rating',
+            },
+          },
+        },
+      },
+      {
+        $project: {
+          _id: 1,
+          average: 1,
+        },
+      },
+    ])
+    .toArray();
+
+  if (!result) res.send('Not found').status(404);
+  else res.send(result).status(200);
+});
+
+// This section will get the average ratings for an item by id
+router.get('/filter/:rating', async (req, res) => {
+  let collection = await db.collection('ratings');
+  let result = await collection
+    .aggregate([
+      {
+        $group: {
+          _id: '$itemId',
+          count: { $sum: 1 },
+          average: {
+            $avg: {
+              $toInt: '$rating',
+            },
+          },
+        },
+      },
+      {
+        $match: {
+          average: { $gte: parseInt(req.params.rating) },
+        },
+      },
+      {
+        $project: {
+          _id: 1,
+          count: 1,
+          average: 1,
+        },
+      },
+    ])
+    .toArray();
 
   if (!result) res.send('Not found').status(404);
   else res.send(result).status(200);
