@@ -101,7 +101,6 @@ export default function ItemList() {
   async function onSubmit(e) {
     e.preventDefault();
     const item = { ...form };
-    console.log(item.rating);
     if (parseInt(item.rating)) {
       const response = await fetch(
         `http://localhost:5050/rating/filter/${item.rating}`
@@ -112,6 +111,7 @@ export default function ItemList() {
         return;
       }
       const result = await response.json();
+      console.log(result);
       getFilteredItems(result);
     } else {
       const response = await fetch(`http://localhost:5050/item/`);
@@ -121,6 +121,7 @@ export default function ItemList() {
         return;
       }
       const result = await response.json();
+      console.log(result);
       getFilteredItems(result);
     }
   }
@@ -128,7 +129,6 @@ export default function ItemList() {
   async function getFilteredItems(result) {
     const promises = result.map(async (item) => {
       const response = await fetch(`http://localhost:5050/item/${item._id}`);
-      console.log(response);
       if (!response.ok) {
         const message = `An error has occurred: ${response.statusText}`;
         console.error(message);
@@ -198,6 +198,8 @@ export default function ItemList() {
             />
           </div>
         </form>
+
+        <p className="text-lg font-bold text-white">{items.length} results</p>
 
         <Link className="text-reeses-yellow hover:opacity-70" to="/create">
           Add Reese's Item...
