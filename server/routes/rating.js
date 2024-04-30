@@ -28,7 +28,7 @@ router.get('/:id', async (req, res) => {
   else res.send(result).status(200);
 });
 
-// This section will get the average ratings for an item by id
+// This section will get the average rating for an item by id
 router.get('/avg/:id', async (req, res) => {
   let collection = await db.collection('ratings');
   let result = await collection
@@ -61,7 +61,7 @@ router.get('/avg/:id', async (req, res) => {
   else res.send(result).status(200);
 });
 
-// This section will get the average ratings for an item by id
+// This section will get all items with an average rating greater than or equal to a specified value
 router.get('/filter/:rating', async (req, res) => {
   let collection = await db.collection('ratings');
   let result = await collection
